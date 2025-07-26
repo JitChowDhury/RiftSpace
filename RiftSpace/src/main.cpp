@@ -1,8 +1,9 @@
-#include <iostream>
-#include<SFML/Graphics.hpp>
-using namespace std;
+#include <SFML/Graphics.hpp>
 
 int main()
 {
-	cout << "Hello" << endl;
+    sf::RenderWindow window(sf::VideoMode({ 200, 200 }), "SFML works!");
+
+
+
 }
