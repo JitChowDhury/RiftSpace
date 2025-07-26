@@ -13,3 +13,21 @@ set(CMAKE_CXX_EXTENSIONS       OFF)
 set(RIFT_SPACE_GAME_TARGET_NAME RiftSpace)
 
 add_subdirectory(RiftSpace)
+
+include(FetchContent)
+set(SFML_LIB_NAME SFML)
+
+FetchContent_Declare(
+    ${SFML_LIB_NAME}
+    GIT_REPOSITORY https://github.com/SFML/SFML
+    GIT_TAG 2.6.0
+    GIT_SHALLOW FALSE
+)
+
+FetchContent_MakeAvailable(${SFML_LIB_NAME})
+
+target_link_libraries(${RIFT_SPACE_GAME_TARGET_NAME} PUBLIC sfml-graphics)
+target_link_libraries(${RIFT_SPACE_GAME_TARGET_NAME} PUBLIC sfml-window)
+target_link_libraries(${RIFT_SPACE_GAME_TARGET_NAME} PUBLIC sfml-system)
+target_link_libraries(${RIFT_SPACE_GAME_TARGET_NAME} PUBLIC sfml-audio)
+ 
