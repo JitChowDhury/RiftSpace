@@ -1,23 +1,26 @@
+# Define the executable target using main.cpp
 add_executable(${RIFT_SPACE_GAME_TARGET_NAME}
   ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
 )
-
+# Link SFML modules (graphics, window, system, audio, network) to our game target
 target_link_libraries(${RIFT_SPACE_GAME_TARGET_NAME} PUBLIC sfml-graphics)
 target_link_libraries(${RIFT_SPACE_GAME_TARGET_NAME} PUBLIC sfml-window)
 target_link_libraries(${RIFT_SPACE_GAME_TARGET_NAME} PUBLIC sfml-system)
 target_link_libraries(${RIFT_SPACE_GAME_TARGET_NAME} PUBLIC sfml-audio)
 target_link_libraries(${RIFT_SPACE_GAME_TARGET_NAME} PUBLIC sfml-network)
-
+# Define a custom function to copy SFML DLLs to the output folder after build
 function(CopyLibToTarget LIB_NAME TARGET_NAME)
-add_custom_command(TARGET ${TARGET_NAME}
-	POST_BUILD
+add_custom_command(TARGET ${TARGET_NAME} # Apply this to our game executable
+	POST_BUILD                           # After building the game...
 	COMMAND
-	${CMAKE_COMMAND} -E copy_if_different
-	$<TARGET_FILE:${LIB_NAME}>
-	$<TARGET_FILE_DIR:${TARGET_NAME}>)
+	${CMAKE_COMMAND} -E copy_if_different# Copy the DLL file if it's not already there
+	$<TARGET_FILE:${LIB_NAME}>           # Source: the DLL of the SFML lib
+	$<TARGET_FILE_DIR:${TARGET_NAME}>)   # Destination: same folder as the game executable
 
 endfunction()
 
+
+# Call the function to copy each SFML library to the executable directory
 CopyLibToTarget(sfml-graphics ${RIFT_SPACE_GAME_TARGET_NAME})
 CopyLibToTarget(sfml-window ${RIFT_SPACE_GAME_TARGET_NAME})
 CopyLibToTarget(sfml-system ${RIFT_SPACE_GAME_TARGET_NAME})
