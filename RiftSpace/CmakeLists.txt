@@ -1,7 +1,13 @@
 # Define the executable target using main.cpp
 add_executable(${RIFT_SPACE_GAME_TARGET_NAME}
   ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
-)
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/framework/Application.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/framework/Application.cpp
+ )
+ target_include_directories(${RIFT_SPACE_GAME_TARGET_NAME} PUBLIC
+ ${CMAKE_CURRENT_SOURCE_DIR}/include
+ )
+
 # Link SFML modules (graphics, window, system, audio, network) to our game target
 target_link_libraries(${RIFT_SPACE_GAME_TARGET_NAME} PUBLIC sfml-graphics)
 target_link_libraries(${RIFT_SPACE_GAME_TARGET_NAME} PUBLIC sfml-window)
