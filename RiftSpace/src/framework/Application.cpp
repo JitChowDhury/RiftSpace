@@ -22,6 +22,7 @@ namespace rs
         {
             // Handle events like closing the window
             sf::Event event;
+
             while (m_window.pollEvent(event))
             {
                 if (event.type == sf::Event::Closed)
@@ -32,30 +33,49 @@ namespace rs
 
             // Adds the time passed since last frame to the accumulated time
             // Suppose 0.017s passed since last frame, that is added to accumulatedTime
-            accumulatedTime += mTickClock.restart().asSeconds();
+            accumulatedTime += mTickClock.restart().asSeconds(); // deltatime
 
             // We process the game logic as many times as needed to "catch up" with real-time
             // This allows the logic to run at a fixed rate (like 60 FPS), regardless of actual render rate
             while (accumulatedTime > targetDeltaTime)
             {
+                accumulatedTime -= targetDeltaTime;
+                TickInternal(targetDeltaTime);
+                RenderInternal();
                 // If enough time has passed for one logic update (more than targetDeltaTime),
                 // we update game logic (Tick), and reduce the accumulated time
 
-                accumulatedTime -= targetDeltaTime;
 
                 // We call Tick() with the fixed timestep so movement, physics, etc. are consistent
-                Tick(targetDeltaTime);
 
                 // Then render the frame. This could be done after one or multiple logic updates.
-                Render();
             }
         }
     }
-	void Application::Tick(float deltaTime)
+	void Application::TickInternal(float deltaTime)
 	{
+        Tick(deltaTime);
 		std::cout << "ticking at frameRate: " << 1.f / deltaTime << std::endl;
 	}
-	void Application::Render()
+	void Application::RenderInternal()
 	{
+		m_window.clear();//first clear prev frame
+        Render();//draw
+        m_window.display();//display then
+       
 	}
+
+    void Application::Render()
+    {
+        sf::RectangleShape rect{ sf::Vector2f{100,100} };
+        rect.setOrigin(50, 50);
+        rect.setPosition(m_window.getSize().x / 2, m_window.getSize().y / 2);
+        rect.setFillColor(sf::Color::Green);
+        m_window.draw(rect);
+    }
+
+    void Application::Tick(float deltaTime)
+    {
+        
+    }
 }
